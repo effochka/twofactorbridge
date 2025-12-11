@@ -7,14 +7,26 @@
 import SwiftUI
 
 struct SuccessView: View {
+    let onLogout: () -> Void
+    
     var body: some View {
         VStack(spacing: 16) {
-            Text("Congratulations! You are now authenticated.").font(.largeTitle).multilineTextAlignment(.center)
+            Text("Congratulations! You are now authenticated.")
+                .font(.largeTitle)
+                .multilineTextAlignment(.center)
+            
+            Button("Logout") {
+                onLogout()
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.red)
         }
         .padding()
     }
 }
 
 #Preview {
-    SuccessView()
+    SuccessView {
+        print("logged out")
+    }
 }

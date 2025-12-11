@@ -29,7 +29,9 @@ struct TwoFactorBridgeApp: App {
                     authState = .authenticated
                 }
             case .authenticated:
-                SuccessView()
+                SuccessView {
+                    authState = .loggedOut
+                }
             }
         }
     }
