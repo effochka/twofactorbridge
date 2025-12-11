@@ -62,10 +62,41 @@
               <br>
               <button type="submit">Verify Code</button>
           </form>
+          <div id="status"></div>
       </div>
 
       <script>
+          //Extract the code from the form and send it to the app
+          //Payload consists of a numerical code and a timestamp in seconds
+          const form = document.getElementById("twoFactorForm");
+          const codeInput = document.getElementById("codeInput");
+          const statusDiv = document.getElementById("status");
           
+          form.addEventListener("submit", function(e) {
+              e.preventDefault();
+              
+              const payload = {
+                  code: codeInput.value || "",
+                  timestamp: Date.now() / 1000
+              };
+              
+              if (window.webkit?.messageHandlers?.twoFactor) {
+                  window.webkit.messageHandlers.twoFactor.postMessage(payload);
+              } else {
+                  console.log("Native not available")
+              }
+          });
+          
+          //Show validation result
+          function handleResult(isValid) {
+              if(isValid) {
+                  statusDiv.textContent = "Code accepted";
+                  statusDiv.style.color = "green";
+              } else {
+                  statusDiv.textContent = "Invalid code. Please try again";
+                  statusDiv.style.color = "red";
+              }
+          }
       </script>
   </body>
   </html>
