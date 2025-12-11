@@ -15,13 +15,19 @@ struct LoginView: View {
     var body: some View {
         VStack(spacing: 16) {
             Text("Please Login")
-            TextField("Username", text: $username).textFieldStyle(.roundedBorder)
-            SecureField("Password", text: $password).textFieldStyle(.roundedBorder)
+            TextField("Username", text: $username)
+                .textFieldStyle(.roundedBorder)
+                .autocorrectionDisabled()
+                .autocapitalization(.none)
+            SecureField("Password", text: $password)
+                .textFieldStyle(.roundedBorder)
             Button("Login") {
                 guard !username.isEmpty, !password.isEmpty else { return }
                 onLogin()
             }
             .buttonStyle(.borderedProminent)
+            .disabled(username.isEmpty || password.isEmpty)
+            
         }.padding()
     }
 }
