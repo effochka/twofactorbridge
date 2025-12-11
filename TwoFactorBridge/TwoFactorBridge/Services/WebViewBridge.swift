@@ -40,7 +40,7 @@ class WebViewBridge: NSObject, WKScriptMessageHandler {
     }
     
     //Validation rules: code is numeric, timestamp is not older than 5 minutes old
-    func validatePayload(payload: Payload) -> Bool {
+    public func validatePayload(payload: Payload) -> Bool {
         let code = payload.code
         guard code.count == 6, code.allSatisfy({$0.isNumber}) else {
             print()
@@ -49,8 +49,8 @@ class WebViewBridge: NSObject, WKScriptMessageHandler {
         
         let now = Date().timeIntervalSince1970
         guard payload.timestamp <= now && now - payload.timestamp <= 300 else {
-             return false
-         }
+            return false
+        }
         return true
     }
 }
