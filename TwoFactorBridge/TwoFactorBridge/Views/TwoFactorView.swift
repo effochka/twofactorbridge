@@ -18,19 +18,29 @@ struct TwoFactorView: View {
 
 struct TwoFactorWebView: UIViewRepresentable {
     let onAuthenticated: () -> Void
-
-    func makeUIView(context: Context) -> some UIView {
-        let webView = WKWebView()
+    
+    func makeUIView(context: Context) -> WKWebView {
+        let configuration = WKWebViewConfiguration()
+        let controller = WKUserContentController()
         
+        controller.add(context.coordinator, name: "twoFactor")
+        configuration.userContentController = controller
+        
+        let webView = WKWebView(frame: .zero, configuration: configuration)
+
         if let url = Bundle.main.url(forResource: "twofactor", withExtension: "html") {
             webView.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
         }
         
+        context.coordinator.webView = webView
         return webView
     }
     
-    func updateUIView(_ uiView: UIViewType, context: Context) {
+    func makeCoordinator() -> WebViewBridge {
+        WebViewBridge(onAuthenticated: onAuthenticated)
     }
+    
+    func updateUIView(_ uiView: UIViewType, context: Context) {}
 }
 
 #Preview {
