@@ -25,7 +25,9 @@ struct TwoFactorBridgeApp: App {
                     authState = .waitingFor2FA
                 }
             case .waitingFor2FA:
-                TwoFactorView()
+                TwoFactorView {
+                    authState = .authenticated
+                }
             case .authenticated:
                 SuccessView()
             }
