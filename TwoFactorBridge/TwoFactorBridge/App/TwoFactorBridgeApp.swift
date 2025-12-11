@@ -6,13 +6,13 @@
 //
 
 import SwiftUI
-
 enum AuthState {
     case loggedOut
     case waitingFor2FA
     case authenticated
 }
 
+//Coordinator pattern to handle different autorization states
 @main
 struct TwoFactorBridgeApp: App {
     @State private var authState: AuthState = .loggedOut
@@ -22,16 +22,22 @@ struct TwoFactorBridgeApp: App {
             switch authState {
             case .loggedOut:
                 LoginView {
-                    authState = .waitingFor2FA
-                }
+                    withAnimation {
+                        authState = .waitingFor2FA
+                    }
+                }.transition(.opacity)
             case .waitingFor2FA:
                 TwoFactorView {
-                    authState = .authenticated
-                }
+                    withAnimation {
+                        authState = .authenticated
+                    }
+                }.transition(.opacity)
             case .authenticated:
                 SuccessView {
-                    authState = .loggedOut
-                }
+                    withAnimation {
+                        authState = .loggedOut
+                    }
+                }.transition(.opacity)
             }
         }
     }
